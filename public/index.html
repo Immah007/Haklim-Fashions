@@ -7,6 +7,7 @@
     <title>Boutiql | Curated Luxury & Artisan Finds</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
     <style>
         :root {
             --primary: #8a6e5a;
@@ -178,7 +179,7 @@
             }
         }
 
-        /* Header Styles */
+        /* Header Styles - ORIGINAL */
         header {
             background-color: white;
             box-shadow: 0 2px 10px rgba(138, 110, 90, 0.15);
@@ -302,7 +303,7 @@
             color: var(--gray);
         }
 
-        /* Hero Section */
+        /* Hero Section - ORIGINAL */
         .hero {
             background: linear-gradient(135deg, #f8f4f0 0%, #eae4dd 100%);
             color: var(--dark);
@@ -382,7 +383,7 @@
             color: white;
         }
 
-        /* Categories Section */
+        /* Categories Section - ORIGINAL */
         .section {
             padding: 50px 0;
         }
@@ -465,7 +466,7 @@
             color: var(--gray);
         }
 
-        /* Featured Products - Boutique Style */
+        /* Featured Products - ORIGINAL LAYOUT RESTORED */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -610,7 +611,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Pagination */
+        /* Pagination - ORIGINAL STYLE */
         .pagination {
             display: flex;
             justify-content: center;
@@ -652,7 +653,7 @@
             cursor: not-allowed;
         }
 
-        /* How It Works */
+        /* How It Works - ORIGINAL */
         .how-it-works {
             background: var(--light);
             border-radius: var(--radius);
@@ -697,31 +698,30 @@
             font-size: 14px;
         }
 
-        /* Testimonials - Fixed Grid Layout */
+        /* Testimonials - SPLIDE CAROUSEL */
         .testimonials {
             background: linear-gradient(135deg, #8a6e5a 0%, #6d5544 100%);
             color: white;
             border-radius: var(--radius);
             overflow: hidden;
             position: relative;
+            padding: 50px 0;
         }
 
         .testimonials .section-title {
             color: white;
+            margin-bottom: 30px;
         }
 
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            padding: 20px 0;
+        .splide__slide {
+            padding: 10px;
         }
 
         .testimonial-card {
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
             border-radius: var(--radius);
-            padding: 25px;
+            padding: 30px;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
             height: 100%;
@@ -773,20 +773,41 @@
             font-weight: 600;
             margin-bottom: 5px;
             font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .author-info p {
             font-size: 13px;
             opacity: 0.8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        /* Chat System */
+        /* Splide Custom Arrows */
+        .splide__arrow {
+            background: rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(10px);
+            width: 40px !important;
+            height: 40px !important;
+            transition: var(--transition) !important;
+        }
+
+        .splide__arrow:hover {
+            background: rgba(255, 255, 255, 0.4) !important;
+        }
+
+        .splide__arrow svg {
+            fill: white !important;
+        }
+
+        .splide__pagination__page {
+            background: rgba(255, 255, 255, 0.3) !important;
+            transition: var(--transition) !important;
+        }
+
+        .splide__pagination__page.is-active {
+            background: white !important;
+            transform: scale(1.2) !important;
+        }
+
+        /* Chat System - ORIGINAL */
         .chat-container {
             position: fixed;
             bottom: 20px;
@@ -910,24 +931,17 @@
 
         .support-details {
             flex: 1;
-            min-width: 0;
         }
 
         .support-details h4 {
             font-size: 15px;
             font-weight: 600;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .support-details p {
             font-size: 12px;
             color: var(--gray);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .support-status {
@@ -1094,7 +1108,7 @@
             background: var(--primary-dark);
         }
 
-        /* Modals */
+        /* Modals - ORIGINAL */
         .modal {
             position: fixed;
             top: 0;
@@ -1232,7 +1246,6 @@
             color: var(--dark);
         }
 
-        /* Cart Items */
         .cart-items {
             max-height: 400px;
             overflow-y: auto;
@@ -1355,7 +1368,6 @@
             grid-column: 1 / -1;
         }
 
-        /* Payment Modal */
         .payment-modal {
             text-align: center;
         }
@@ -1387,7 +1399,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Footer */
+        /* Footer - ORIGINAL */
         footer {
             background: var(--dark);
             color: white;
@@ -1516,7 +1528,7 @@
             margin-bottom: 15px;
         }
 
-        /* Responsive Design */
+        /* Responsive Design - ORIGINAL */
         @media (max-width: 992px) {
             .hero h1 {
                 font-size: 36px;
@@ -1528,10 +1540,6 @@
             
             .products-grid {
                 grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .testimonials-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
             
             .product-detail {
@@ -1607,15 +1615,6 @@
                 grid-template-columns: repeat(3, 1fr);
             }
             
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .testimonial-card {
-                padding: 20px;
-            }
-            
             .chat-window {
                 width: 300px;
                 height: 450px;
@@ -1682,10 +1681,6 @@
             .footer-content {
                 grid-template-columns: 1fr;
             }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -1714,7 +1709,7 @@
                     <a href="#" class="action-btn" id="cart-btn">
                         <i class="fas fa-shopping-bag"></i>
                         <span>Cart</span>
-                        <span style="display: flex;" class="cart-count">0</span>
+                        <span class="cart-count">0</span>
                     </a>
                     <button class="mobile-menu-btn">
                         <i class="fas fa-bars"></i>
@@ -1871,90 +1866,106 @@
         </div>
     </section>
 
-    <!-- Testimonials -->
+    <!-- Testimonials - SPLIDE CAROUSEL -->
     <section class="section testimonials">
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Client Stories</h2>
             </div>
             
-            <div class="testimonials-grid" id="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The handcrafted jewelry I found on Boutiql is absolutely exquisite. Each piece tells a story of craftsmanship I can't find elsewhere."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="Isabella Laurent">
-                        </div>
-                        <div class="author-info">
-                            <h4>Isabella Laurent</h4>
-                            <p>Luxury Collector</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"As an interior designer, I source unique pieces from Boutiql for my clients. The quality and authenticity are consistently exceptional."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="Marcus Chen">
-                        </div>
-                        <div class="author-info">
-                            <h4>Marcus Chen</h4>
-                            <p>Interior Designer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The artisan pottery collection transformed my dining experience. Each piece is a work of art that brings joy to everyday moments."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="Sophie Dubois">
-                        </div>
-                        <div class="author-info">
-                            <h4>Sophie Dubois</h4>
-                            <p>Art Collector</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Boutiql connects me with skilled artisans worldwide. The platform has elevated my gifting to an entirely new level of thoughtfulness."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="Eleanor Vance">
-                        </div>
-                        <div class="author-info">
-                            <h4>Eleanor Vance</h4>
-                            <p>Corporate Gifting</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"The attention to detail in every piece is remarkable. I've built my entire home decor collection from Boutiql finds."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="David Miller">
-                        </div>
-                        <div class="author-info">
-                            <h4>David Miller</h4>
-                            <p>Architect</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Every purchase feels special. The packaging, the authenticity certificates, and the personal notes make all the difference."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="/images/marketplace_logo_base.png" alt="Rachel Green">
-                        </div>
-                        <div class="author-info">
-                            <h4>Rachel Green</h4>
-                            <p>Fashion Editor</p>
-                        </div>
-                    </div>
+            <div class="splide" id="testimonials-splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"The handcrafted jewelry I found on Boutiql is absolutely exquisite. Each piece tells a story of craftsmanship I can't find elsewhere."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="Isabella Laurent">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Isabella Laurent</h4>
+                                        <p>Luxury Collector</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"As an interior designer, I source unique pieces from Boutiql for my clients. The quality and authenticity are consistently exceptional."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="Marcus Chen">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Marcus Chen</h4>
+                                        <p>Interior Designer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"The artisan pottery collection transformed my dining experience. Each piece is a work of art that brings joy to everyday moments."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="Sophie Dubois">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Sophie Dubois</h4>
+                                        <p>Art Collector</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"Boutiql connects me with skilled artisans worldwide. The platform has elevated my gifting to an entirely new level of thoughtfulness."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="Eleanor Vance">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Eleanor Vance</h4>
+                                        <p>Corporate Gifting</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"The attention to detail in every piece is remarkable. I've built my entire home decor collection from Boutiql finds."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="David Miller">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>David Miller</h4>
+                                        <p>Architect</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        
+                        <li class="splide__slide">
+                            <div class="testimonial-card">
+                                <p class="testimonial-text">"Every purchase feels special. The packaging, the authenticity certificates, and the personal notes make all the difference."</p>
+                                <div class="testimonial-author">
+                                    <div class="author-avatar">
+                                        <img src="/images/marketplace_logo_base.png" alt="Rachel Green">
+                                    </div>
+                                    <div class="author-info">
+                                        <h4>Rachel Green</h4>
+                                        <p>Fashion Editor</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -2232,10 +2243,10 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
     <script>
         (function() {
             // ========== CONFIGURATION ==========
-            const API_BASE_URL = 'https://your-api-domain.com'; // Replace with your actual API URL
             const PRODUCTS_PER_PAGE = 12;
 
             // ========== STATE MANAGEMENT ==========
@@ -2244,7 +2255,6 @@
             let totalPages = 1;
             let cart = [];
             let currentProduct = null;
-            let chatActive = false;
 
             // Load cart from localStorage
             try {
@@ -2333,7 +2343,6 @@
                             features: item.features
                         }));
                         
-                        // Calculate total pages based on products per page
                         totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
                         
                         renderProducts();
@@ -2349,26 +2358,21 @@
 
             // Place order
             async function placeOrder(orderData) {
-                try {
-                    const response = await fetch('/checkout/place-order', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(orderData)
-                    });
+                const response = await fetch('/checkout/place-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
 
-                    const result = await response.json();
+                const result = await response.json();
 
-                    if (!response.ok) {
-                        throw new Error(result.message || 'Failed to process order');
-                    }
-
-                    return result;
-                } catch (error) {
-                    console.error('Order error:', error);
-                    throw error;
+                if (!response.ok) {
+                    throw new Error(result.message || 'Failed to process order');
                 }
+
+                return result;
             }
 
             // ========== RENDERING FUNCTIONS ==========
@@ -2395,7 +2399,7 @@
                             <div class="product-image">
                                 <img src="${product.image}" alt="${product.title}" loading="lazy">
                                 ${discountBadge || badge}
-                                <button class="product-wishlist" onclick="window.toggleWishlist(this, ${product.id})">
+                                <button class="product-wishlist" onclick="event.stopPropagation(); window.toggleWishlist(this, '${product.id}')">
                                     <i class="far fa-heart"></i>
                                 </button>
                             </div>
@@ -2407,7 +2411,7 @@
                                     ${formatPrice(product.price)}
                                 </div>
                                 <div class="product-actions">
-                                    <button class="btn-add-to-cart" onclick="window.addToCartDirect(${product.id})">
+                                    <button class="btn-add-to-cart" onclick="event.stopPropagation(); window.addToCartDirect('${product.id}')">
                                         <i class="fas fa-shopping-bag"></i> Add to Cart
                                     </button>
                                 </div>
@@ -2469,7 +2473,6 @@
                 
                 pagination.innerHTML = paginationHtml;
                 
-                // Add event listeners
                 document.getElementById('prev-page').addEventListener('click', () => {
                     if (currentPage > 1) {
                         currentPage--;
@@ -2503,7 +2506,7 @@
 
             // ========== CART FUNCTIONS ==========
 
-            function addToCartDirect(productId) {
+            window.addToCartDirect = function(productId) {
                 const product = products.find(p => p.id == productId);
                 if (!product) return;
                 
@@ -2526,8 +2529,7 @@
                 saveCart();
                 updateCartCount();
                 
-                // Show feedback on button
-                const btn = document.querySelector(`.btn-add-to-cart[onclick*="${productId}"]`);
+                const btn = document.querySelector(`.btn-add-to-cart[onclick*="'${productId}'"]`);
                 if (btn) {
                     const originalText = btn.innerHTML;
                     btn.innerHTML = '<i class="fas fa-check"></i> Added';
@@ -2538,9 +2540,9 @@
                         btn.style.background = '';
                     }, 1500);
                 }
-            }
+            };
 
-            function removeFromCart(productId) {
+            window.removeFromCart = function(productId) {
                 const item = cart.find(item => item.id == productId);
                 if (item) {
                     cart = cart.filter(item => item.id != productId);
@@ -2551,7 +2553,7 @@
                     }
                     showToast(`"${item.title}" removed from cart`, 'info', 'Item Removed');
                 }
-            }
+            };
 
             function updateCartCount() {
                 const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
@@ -2593,7 +2595,7 @@
                                 <div class="cart-item-total">${formatPrice(itemTotal)}</div>
                             </div>
                             <div class="cart-item-actions">
-                                <button class="cart-item-remove" onclick="window.removeFromCart(${item.id})">
+                                <button class="cart-item-remove" onclick="window.removeFromCart('${item.id}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -2617,7 +2619,6 @@
                 const now = new Date();
                 const day = now.getDay();
                 const hour = now.getHours();
-                const minutes = now.getMinutes();
                 
                 const estOffset = -5;
                 const localOffset = now.getTimezoneOffset() / 60;
@@ -2748,6 +2749,7 @@
                 }
                 
                 console.log('Offline message:', { message, email });
+                showToast('Message sent! We\'ll get back to you soon.', 'success', 'Message Sent');
                 
                 const form = document.getElementById('offline-message-form');
                 form.innerHTML = `
@@ -2786,7 +2788,7 @@
 
             // ========== WISHLIST FUNCTION ==========
 
-            function toggleWishlist(btn, productId) {
+            window.toggleWishlist = function(btn, productId) {
                 btn.classList.toggle('active');
                 const icon = btn.querySelector('i');
                 if (btn.classList.contains('active')) {
@@ -2796,7 +2798,7 @@
                     icon.className = 'far fa-heart';
                     showToast('Item removed from wishlist', 'info', 'Wishlist');
                 }
-            }
+            };
 
             // ========== CHECKOUT FUNCTIONS ==========
 
@@ -2899,10 +2901,34 @@
                 }
             }
 
+            // ========== INITIALIZE SPLIDE ==========
+
+            function initSplide() {
+                if (typeof Splide !== 'undefined') {
+                    new Splide('#testimonials-splide', {
+                        type: 'loop',
+                        perPage: 3,
+                        perMove: 1,
+                        gap: '25px',
+                        pagination: true,
+                        arrows: true,
+                        autoplay: true,
+                        interval: 5000,
+                        breakpoints: {
+                            992: {
+                                perPage: 2,
+                            },
+                            768: {
+                                perPage: 1,
+                            }
+                        }
+                    }).mount();
+                }
+            }
+
             // ========== EVENT LISTENERS SETUP ==========
 
             function setupEventListeners() {
-                // Product card click
                 document.addEventListener('click', (e) => {
                     const card = e.target.closest('.product-card');
                     if (card && !e.target.closest('.btn-add-to-cart') && !e.target.closest('.product-wishlist')) {
@@ -2911,13 +2937,11 @@
                     }
                 });
                 
-                // Modal close buttons
                 document.getElementById('product-modal-close').addEventListener('click', () => closeModal('product-modal'));
                 document.getElementById('cart-modal-close').addEventListener('click', () => closeModal('cart-modal'));
                 document.getElementById('checkout-modal-close').addEventListener('click', () => closeModal('checkout-modal'));
                 document.getElementById('payment-modal-close').addEventListener('click', () => closeModal('payment-modal'));
                 
-                // Close modals on outside click
                 document.querySelectorAll('.modal').forEach(modal => {
                     modal.addEventListener('click', (e) => {
                         if (e.target === modal) {
@@ -2927,7 +2951,6 @@
                     });
                 });
                 
-                // Cart button
                 document.getElementById('cart-btn').addEventListener('click', (e) => {
                     e.preventDefault();
                     renderCartItems();
@@ -2935,12 +2958,10 @@
                     document.body.style.overflow = 'hidden';
                 });
                 
-                // Continue shopping button
                 document.getElementById('continue-shopping').addEventListener('click', () => {
                     closeModal('cart-modal');
                 });
                 
-                // Quantity buttons
                 document.getElementById('quantity-decrease').addEventListener('click', () => {
                     const input = document.getElementById('quantity-input');
                     let value = parseInt(input.value);
@@ -2953,7 +2974,6 @@
                     input.value = value + 1;
                 });
                 
-                // Add to cart from modal
                 document.getElementById('add-to-cart-modal').addEventListener('click', () => {
                     if (!currentProduct) return;
                     
@@ -2978,7 +2998,6 @@
                     showToast(`Added ${quantity} "${currentProduct.title}" to cart`, 'success', 'Item Added');
                 });
                 
-                // Checkout button
                 document.getElementById('checkout-btn').addEventListener('click', () => {
                     if (cart.length === 0) {
                         showToast('Your cart is empty', 'error', 'Cannot Checkout');
@@ -2989,22 +3008,18 @@
                     document.body.style.overflow = 'hidden';
                 });
                 
-                // Checkout form submission
                 document.getElementById('checkout-form').addEventListener('submit', handleCheckoutSubmit);
                 
-                // Delivery method change
                 document.getElementById('delivery-method').addEventListener('change', (e) => {
                     const addressFields = document.getElementById('address-fields');
                     addressFields.style.display = e.target.value === 'doorstep' ? 'block' : 'none';
                 });
                 
-                // Cancel payment button
                 document.getElementById('cancel-payment-btn').addEventListener('click', () => {
                     closeModal('payment-modal');
                     showToast('Payment cancelled', 'info', 'Cancelled');
                 });
                 
-                // Chat toggle
                 document.getElementById('chat-toggle').addEventListener('click', () => {
                     const window = document.getElementById('chat-window');
                     window.classList.toggle('active');
@@ -3017,33 +3032,27 @@
                     document.getElementById('chat-window').classList.remove('active');
                 });
                 
-                // Chat send
                 document.getElementById('chat-send').addEventListener('click', sendChatMessage);
                 document.getElementById('chat-input').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') sendChatMessage();
                 });
                 
-                // Offline message send
                 document.getElementById('send-offline-message').addEventListener('click', sendOfflineMessage);
                 
-                // Search
                 document.getElementById('search-btn').addEventListener('click', handleSearch);
                 document.getElementById('search-input').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') handleSearch();
                 });
                 
-                // Mobile menu
                 document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
                     showToast('Mobile menu coming soon', 'info', 'Under Development');
                 });
                 
-                // Wishlist button
                 document.getElementById('wishlist-btn').addEventListener('click', (e) => {
                     e.preventDefault();
                     showToast('Wishlist feature coming soon', 'info', 'Under Development');
                 });
                 
-                // Category cards
                 document.querySelectorAll('.category-card').forEach(card => {
                     card.addEventListener('click', () => {
                         const category = card.querySelector('.category-name').textContent;
@@ -3051,7 +3060,6 @@
                     });
                 });
                 
-                // View all links
                 document.querySelectorAll('.view-all').forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -3059,7 +3067,6 @@
                     });
                 });
                 
-                // Hero buttons
                 document.querySelectorAll('.hero-actions .btn').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -3079,19 +3086,14 @@
                 updateCartCount();
                 updateChatStatus();
                 setupEventListeners();
+                initSplide();
                 
-                // Update chat status every minute
                 setInterval(updateChatStatus, 60000);
             }
 
-            // Expose functions to window
             window.fetchProducts = fetchProducts;
-            window.addToCartDirect = addToCartDirect;
-            window.removeFromCart = removeFromCart;
-            window.toggleWishlist = toggleWishlist;
             window.initChat = initChat;
 
-            // Start the app
             document.addEventListener('DOMContentLoaded', init);
         })();
     </script>
