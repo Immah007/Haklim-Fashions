@@ -24,6 +24,9 @@
             --shadow: 0 3px 8px rgba(138, 110, 90, 0.08);
             --shadow-lg: 0 8px 20px rgba(138, 110, 90, 0.12);
             --transition: all 0.3s ease;
+            --toast-success: #8a9a5b;
+            --toast-error: #b86b6b;
+            --toast-info: #8a6e5a;
         }
 
         * {
@@ -62,6 +65,117 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 15px;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            min-width: 300px;
+            max-width: 400px;
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast.success {
+            border-left-color: var(--toast-success);
+        }
+
+        .toast.error {
+            border-left-color: var(--toast-error);
+        }
+
+        .toast.info {
+            border-left-color: var(--toast-info);
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
+
+        .toast.success .toast-icon {
+            color: var(--toast-success);
+        }
+
+        .toast.error .toast-icon {
+            color: var(--toast-error);
+        }
+
+        .toast.info .toast-icon {
+            color: var(--toast-info);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .toast-message {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            animation: progress 3s linear forwards;
+        }
+
+        .toast.success .toast-progress {
+            background: var(--toast-success);
+        }
+
+        .toast.error .toast-progress {
+            background: var(--toast-error);
+        }
+
+        .toast.info .toast-progress {
+            background: var(--toast-info);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
         }
 
         /* Header Styles */
@@ -503,6 +617,7 @@
             align-items: center;
             margin-top: 40px;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .pagination-btn {
@@ -517,6 +632,8 @@
             box-shadow: var(--shadow);
             transition: var(--transition);
             border: 1px solid var(--light-gray);
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .pagination-btn.active {
@@ -525,17 +642,17 @@
             border-color: var(--primary);
         }
 
-        .pagination-btn:hover:not(.active) {
+        .pagination-btn:hover:not(.active):not(:disabled) {
             background: var(--light);
             border-color: var(--secondary);
         }
 
-        .pagination-btn.disabled {
+        .pagination-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* How It Works - Updated for single seller boutique */
+        /* How It Works */
         .how-it-works {
             background: var(--light);
             border-radius: var(--radius);
@@ -580,7 +697,7 @@
             font-size: 14px;
         }
 
-        /* Testimonials - Improved Carousel */
+        /* Testimonials - Fixed Grid Layout */
         .testimonials {
             background: linear-gradient(135deg, #8a6e5a 0%, #6d5544 100%);
             color: white;
@@ -593,23 +710,11 @@
             color: white;
         }
 
-        .testimonials-container {
-            position: relative;
-            overflow: hidden;
-            padding: 0 40px;
-        }
-
-        .testimonials-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-
         .testimonials-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            padding: 10px 0 30px;
-            width: 100%;
-            flex-shrink: 0;
+            padding: 20px 0;
         }
 
         .testimonial-card {
@@ -618,9 +723,10 @@
             border-radius: var(--radius);
             padding: 25px;
             transition: var(--transition);
-            min-width: 300px;
-            flex: 0 0 calc(33.333% - 17px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .testimonial-card:hover {
@@ -633,12 +739,14 @@
             margin-bottom: 20px;
             line-height: 1.7;
             font-size: 15px;
+            flex-grow: 1;
         }
 
         .testimonial-author {
             display: flex;
             align-items: center;
             gap: 15px;
+            margin-top: auto;
         }
 
         .author-avatar {
@@ -648,6 +756,7 @@
             background: var(--light);
             overflow: hidden;
             border: 2px solid var(--secondary);
+            flex-shrink: 0;
         }
 
         .author-avatar img {
@@ -656,75 +765,28 @@
             object-fit: cover;
         }
 
+        .author-info {
+            min-width: 0;
+        }
+
         .author-info h4 {
             font-weight: 600;
             margin-bottom: 5px;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .author-info p {
             font-size: 13px;
             opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Testimonial Navigation */
-        .testimonial-nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .testimonial-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .testimonial-dot.active {
-            background: white;
-            transform: scale(1.2);
-        }
-
-        .testimonial-dot:hover {
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .testimonial-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            transition: var(--transition);
-            z-index: 10;
-            border: none;
-        }
-
-        .testimonial-arrow:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
-
-        .testimonial-arrow.prev {
-            left: 0;
-        }
-
-        .testimonial-arrow.next {
-            right: 0;
-        }
-
-        /* Chat System - Customer Support Only with Offline Mode */
+        /* Chat System */
         .chat-container {
             position: fixed;
             bottom: 20px;
@@ -843,21 +905,29 @@
             color: white;
             font-size: 24px;
             border: 2px solid var(--secondary);
+            flex-shrink: 0;
         }
 
         .support-details {
             flex: 1;
+            min-width: 0;
         }
 
         .support-details h4 {
             font-size: 15px;
             font-weight: 600;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .support-details p {
             font-size: 12px;
             color: var(--gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .support-status {
@@ -899,6 +969,7 @@
             font-size: 14px;
             line-height: 1.4;
             position: relative;
+            word-wrap: break-word;
         }
 
         .message.support {
@@ -981,35 +1052,6 @@
             cursor: not-allowed;
         }
 
-        .chat-welcome {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--gray);
-        }
-
-        .chat-welcome i {
-            font-size: 48px;
-            color: var(--primary);
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .chat-welcome h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: var(--dark);
-        }
-
-        .chat-welcome p {
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .chat-welcome .btn {
-            padding: 8px 20px;
-            font-size: 13px;
-        }
-
         .offline-message-form {
             padding: 20px;
             background: var(--light);
@@ -1018,22 +1060,24 @@
 
         .offline-message-form textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid var(--light-gray);
             border-radius: var(--radius);
             font-family: inherit;
             font-size: 14px;
             margin-bottom: 10px;
             resize: vertical;
+            background: white;
         }
 
         .offline-message-form input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid var(--light-gray);
             border-radius: var(--radius);
             font-size: 14px;
             margin-bottom: 10px;
+            background: white;
         }
 
         .offline-message-form button {
@@ -1043,6 +1087,7 @@
             color: white;
             border-radius: var(--radius);
             font-weight: 600;
+            transition: var(--transition);
         }
 
         .offline-message-form button:hover {
@@ -1086,12 +1131,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
         }
 
         .modal-close {
             background: none;
             font-size: 24px;
             color: var(--gray);
+            cursor: pointer;
         }
 
         .modal-body {
@@ -1146,6 +1196,7 @@
         .product-detail-actions {
             display: flex;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .quantity-selector {
@@ -1164,6 +1215,11 @@
             align-items: center;
             justify-content: center;
             color: var(--dark);
+            cursor: pointer;
+        }
+
+        .quantity-btn:hover {
+            background: var(--light-gray);
         }
 
         .quantity-input {
@@ -1176,6 +1232,7 @@
             color: var(--dark);
         }
 
+        /* Cart Items */
         .cart-items {
             max-height: 400px;
             overflow-y: auto;
@@ -1195,6 +1252,7 @@
             overflow: hidden;
             margin-right: 15px;
             border: 1px solid var(--light-gray);
+            flex-shrink: 0;
         }
 
         .cart-item-image img {
@@ -1205,12 +1263,16 @@
 
         .cart-item-details {
             flex: 1;
+            min-width: 0;
         }
 
         .cart-item-title {
             font-weight: 600;
             margin-bottom: 5px;
             font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .cart-item-price {
@@ -1218,10 +1280,23 @@
             font-weight: 600;
         }
 
+        .cart-item-total {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
         .cart-item-actions {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-left: 10px;
+        }
+
+        .cart-item-remove {
+            background: none;
+            color: var(--danger);
+            font-size: 18px;
+            cursor: pointer;
         }
 
         .cart-summary {
@@ -1271,8 +1346,45 @@
             font-size: 14px;
         }
 
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         .form-group.full-width {
             grid-column: 1 / -1;
+        }
+
+        /* Payment Modal */
+        .payment-modal {
+            text-align: center;
+        }
+
+        .payment-modal iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: var(--radius);
+            margin: 20px 0;
+        }
+
+        .payment-processing {
+            padding: 40px 0;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Footer */
@@ -1360,6 +1472,7 @@
             text-align: center;
             padding: 40px;
             color: var(--gray);
+            grid-column: 1 / -1;
         }
 
         .loading-spinner i {
@@ -1372,6 +1485,7 @@
             text-align: center;
             padding: 40px;
             color: var(--danger);
+            grid-column: 1 / -1;
         }
 
         .error-message i {
@@ -1390,6 +1504,18 @@
             cursor: pointer;
         }
 
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .no-products i {
+            font-size: 48px;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .hero h1 {
@@ -1404,9 +1530,8 @@
                 grid-template-columns: repeat(4, 1fr);
             }
             
-            .testimonial-card {
-                min-width: 280px;
-                flex: 0 0 calc(50% - 13px);
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .product-detail {
@@ -1482,13 +1607,13 @@
                 grid-template-columns: repeat(3, 1fr);
             }
             
-            .testimonial-card {
-                min-width: 250px;
-                flex: 0 0 100%;
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
             
-            .testimonials-container {
-                padding: 0 30px;
+            .testimonial-card {
+                padding: 20px;
             }
             
             .chat-window {
@@ -1528,17 +1653,24 @@
                 grid-template-columns: 1fr;
             }
             
-            .testimonials-grid {
-                gap: 15px;
-            }
-            
-            .testimonial-card {
-                min-width: 100%;
-            }
-            
             .chat-window {
                 width: calc(100vw - 40px);
                 right: 20px;
+            }
+            
+            .cart-item {
+                flex-wrap: wrap;
+            }
+            
+            .cart-item-image {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .cart-item-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 10px;
             }
         }
 
@@ -1550,10 +1682,17 @@
             .footer-content {
                 grid-template-columns: 1fr;
             }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
     <!-- Header -->
     <header>
         <div class="container">
@@ -1687,21 +1826,13 @@
             
             <div class="products-grid" id="products-grid">
                 <!-- Products will be dynamically loaded here -->
-                <div class="loading-spinner" id="products-loading">
+                <div class="loading-spinner">
                     <i class="fas fa-spinner fa-spin"></i>
                     <p>Loading curated collection...</p>
                 </div>
             </div>
             
-            <div class="pagination" id="pagination" style="display: none;">
-                <button class="pagination-btn disabled" id="prev-page"><i class="fas fa-chevron-left"></i></button>
-                <button class="pagination-btn active" id="page-1">1</button>
-                <button class="pagination-btn" id="page-2">2</button>
-                <button class="pagination-btn" id="page-3">3</button>
-                <button class="pagination-btn" id="page-4">4</button>
-                <button class="pagination-btn" id="page-5">5</button>
-                <button class="pagination-btn" id="next-page"><i class="fas fa-chevron-right"></i></button>
-            </div>
+            <div class="pagination" id="pagination" style="display: none;"></div>
         </div>
     </section>
 
@@ -1747,107 +1878,89 @@
                 <h2 class="section-title">Client Stories</h2>
             </div>
             
-            <div class="testimonials-container">
-                <button class="testimonial-arrow prev" id="testimonial-prev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
-                <div class="testimonials-track" id="testimonials-track">
-                    <div class="testimonials-grid" id="testimonials-grid-1">
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"The handcrafted jewelry I found on Boutiql is absolutely exquisite. Each piece tells a story of craftsmanship I can't find elsewhere."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="Isabella Laurent">
-                                </div>
-                                <div class="author-info">
-                                    <h4>Isabella Laurent</h4>
-                                    <p>Luxury Collector</p>
-                                </div>
-                            </div>
+            <div class="testimonials-grid" id="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The handcrafted jewelry I found on Boutiql is absolutely exquisite. Each piece tells a story of craftsmanship I can't find elsewhere."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="Isabella Laurent">
                         </div>
-                        
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"As an interior designer, I source unique pieces from Boutiql for my clients. The quality and authenticity are consistently exceptional."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="Marcus Chen">
-                                </div>
-                                <div class="author-info">
-                                    <h4>Marcus Chen</h4>
-                                    <p>Interior Designer</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"The artisan pottery collection transformed my dining experience. Each piece is a work of art that brings joy to everyday moments."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="Sophie Dubois">
-                                </div>
-                                <div class="author-info">
-                                    <h4>Sophie Dubois</h4>
-                                    <p>Art Collector</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="testimonials-grid" id="testimonials-grid-2">
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"Boutiql connects me with skilled artisans worldwide. The platform has elevated my gifting to an entirely new level of thoughtfulness."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="Eleanor Vance">
-                                </div>
-                                <div class="author-info">
-                                    <h4>Eleanor Vance</h4>
-                                    <p>Corporate Gifting</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"The attention to detail in every piece is remarkable. I've built my entire home decor collection from Boutiql finds."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="David Miller">
-                                </div>
-                                <div class="author-info">
-                                    <h4>David Miller</h4>
-                                    <p>Architect</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="testimonial-card">
-                            <p class="testimonial-text">"Every purchase feels special. The packaging, the authenticity certificates, and the personal notes make all the difference."</p>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    <img src="/images/marketplace_logo_base.png" alt="Rachel Green">
-                                </div>
-                                <div class="author-info">
-                                    <h4>Rachel Green</h4>
-                                    <p>Fashion Editor</p>
-                                </div>
-                            </div>
+                        <div class="author-info">
+                            <h4>Isabella Laurent</h4>
+                            <p>Luxury Collector</p>
                         </div>
                     </div>
                 </div>
                 
-                <button class="testimonial-arrow next" id="testimonial-next">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            
-            <div class="testimonial-nav" id="testimonial-dots">
-                <!-- Dots will be dynamically added -->
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"As an interior designer, I source unique pieces from Boutiql for my clients. The quality and authenticity are consistently exceptional."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="Marcus Chen">
+                        </div>
+                        <div class="author-info">
+                            <h4>Marcus Chen</h4>
+                            <p>Interior Designer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The artisan pottery collection transformed my dining experience. Each piece is a work of art that brings joy to everyday moments."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="Sophie Dubois">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sophie Dubois</h4>
+                            <p>Art Collector</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Boutiql connects me with skilled artisans worldwide. The platform has elevated my gifting to an entirely new level of thoughtfulness."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="Eleanor Vance">
+                        </div>
+                        <div class="author-info">
+                            <h4>Eleanor Vance</h4>
+                            <p>Corporate Gifting</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The attention to detail in every piece is remarkable. I've built my entire home decor collection from Boutiql finds."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="David Miller">
+                        </div>
+                        <div class="author-info">
+                            <h4>David Miller</h4>
+                            <p>Architect</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Every purchase feels special. The packaging, the authenticity certificates, and the personal notes make all the difference."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/images/marketplace_logo_base.png" alt="Rachel Green">
+                        </div>
+                        <div class="author-info">
+                            <h4>Rachel Green</h4>
+                            <p>Fashion Editor</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Chat System - Customer Support Only with Offline Mode -->
+    <!-- Chat System -->
     <div class="chat-container">
         <button class="chat-button" id="chat-toggle">
             <i class="fas fa-headset"></i>
@@ -1955,7 +2068,7 @@
                 
                 <div class="cart-actions" style="display: flex; justify-content: space-between; margin-top: 20px;">
                     <button class="btn" style="background: var(--light); border: 1px solid var(--light-gray);" id="continue-shopping">Continue Shopping</button>
-                    <button class="btn btn-primary" id="checkout-btn">Complete Purchase</button>
+                    <button class="btn btn-primary" id="checkout-btn">Proceed to Checkout</button>
                 </div>
             </div>
         </div>
@@ -2006,20 +2119,61 @@
                     </div>
                     
                     <div class="form-group full-width">
-                        <label for="payment">Payment Method</label>
-                        <select id="payment" required>
+                        <label for="delivery-method">Delivery Method</label>
+                        <select id="delivery-method" required>
+                            <option value="">Select delivery method</option>
+                            <option value="store1">Store Pickup - Nairobi CBD</option>
+                            <option value="store2">Store Pickup - Westlands</option>
+                            <option value="doorstep">Doorstep Delivery</option>
+                        </select>
+                    </div>
+                    
+                    <div id="address-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" id="country">
+                        </div>
+                        <div class="form-group">
+                            <label for="area">Area/Neighborhood</label>
+                            <input type="text" id="area">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="payment-method">Payment Method</label>
+                        <select id="payment-method" required>
                             <option value="">Select Payment Method</option>
-                            <option value="credit">Credit Card</option>
-                            <option value="debit">Debit Card</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="wire">Bank Transfer</option>
+                            <option value="mpesa">M-Pesa</option>
+                            <option value="pesapal">PesaPal</option>
+                            <option value="visa">Visa</option>
+                            <option value="airtel">Airtel Money</option>
                         </select>
                     </div>
                     
                     <div class="form-group full-width">
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Place Order</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;" id="complete-purchase-btn">Complete Purchase</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="payment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Processing Payment</h2>
+                <button class="modal-close" id="payment-modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body payment-modal">
+                <div class="payment-processing" id="payment-processing">
+                    <div class="spinner"></div>
+                    <p>Please wait while we process your payment...</p>
+                </div>
+                <div id="payment-iframe-container" style="display: none;">
+                    <iframe id="payment-iframe" src="about:blank"></iframe>
+                    <button class="btn btn-outline" id="cancel-payment-btn" style="margin-top: 20px;">Cancel Payment</button>
+                </div>
             </div>
         </div>
     </div>
@@ -2079,794 +2233,867 @@
     </footer>
 
     <script>
-        // API Configuration - Real Production Endpoint
-        const API_BASE_URL = 'https://your-api-domain.com'; // Replace with your actual API URL
-        const PRODUCTS_PER_PAGE = 12;
+        (function() {
+            // ========== CONFIGURATION ==========
+            const API_BASE_URL = 'https://your-api-domain.com'; // Replace with your actual API URL
+            const PRODUCTS_PER_PAGE = 12;
 
-        // State Management
-        let products = [];
-        let currentPage = 1;
-        let totalPages = 1;
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let currentProduct = null;
-        
-        // Chat State
-        let chatActive = false;
-        let isOnline = checkSupportOnline();
-        let supportMessages = [];
+            // ========== STATE MANAGEMENT ==========
+            let products = [];
+            let currentPage = 1;
+            let totalPages = 1;
+            let cart = [];
+            let currentProduct = null;
+            let chatActive = false;
 
-        // DOM Elements
-        const productsGrid = document.getElementById('products-grid');
-        const productsLoading = document.getElementById('products-loading');
-        const pagination = document.getElementById('pagination');
-        const prevPageBtn = document.getElementById('prev-page');
-        const nextPageBtn = document.getElementById('next-page');
-        const pageButtons = [1, 2, 3, 4, 5].map(num => document.getElementById(`page-${num}`));
-        
-        // Modal Elements
-        const productModal = document.getElementById('product-modal');
-        const cartModal = document.getElementById('cart-modal');
-        const checkoutModal = document.getElementById('checkout-modal');
-        
-        // Chat Elements
-        const chatWindow = document.getElementById('chat-window');
-        const chatToggle = document.getElementById('chat-toggle');
-        const chatClose = document.getElementById('chat-close');
-        const chatMessages = document.getElementById('chat-messages');
-        const chatInputArea = document.getElementById('chat-input-area');
-        const chatInput = document.getElementById('chat-input');
-        const chatSend = document.getElementById('chat-send');
-        const offlineMessageForm = document.getElementById('offline-message-form');
-        const offlineMessage = document.getElementById('offline-message');
-        const offlineEmail = document.getElementById('offline-email');
-        const sendOfflineMessage = document.getElementById('send-offline-message');
-        const chatStatusBadge = document.getElementById('chat-status-badge');
-        const supportStatus = document.getElementById('support-status');
-        const supportStatusText = document.getElementById('support-status-text');
-        const supportHours = document.getElementById('support-hours');
-
-        // Cart Elements
-        const cartItemsContainer = document.getElementById('cart-items');
-        const cartCount = document.querySelector('.cart-count');
-        const cartSubtotal = document.getElementById('cart-subtotal');
-        const cartTax = document.getElementById('cart-tax');
-        const cartShipping = document.getElementById('cart-shipping');
-        const cartTotal = document.getElementById('cart-total');
-
-        // Testimonial Carousel
-        const testimonialsTrack = document.getElementById('testimonials-track');
-        const testimonialDots = document.getElementById('testimonial-dots');
-        const testimonialPrev = document.getElementById('testimonial-prev');
-        const testimonialNext = document.getElementById('testimonial-next');
-        let currentTestimonialSlide = 0;
-        const testimonialSlides = 2;
-        let autoSlideInterval;
-
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchProducts();
-            updateCartCount();
-            initTestimonialCarousel();
-            setupEventListeners();
-            updateChatStatus();
-        });
-
-        // ========== REAL API CALLS ==========
-
-        // API Request: Fetch Products - Using the exact endpoint from your first code
-        async function fetchProducts(page = 1) {
+            // Load cart from localStorage
             try {
-                showLoading();
-                
-                // REAL API CALL - Using the exact endpoint from your first code
-                const response = await fetch(`/fetch/get-products?page=${page}&limit=${PRODUCTS_PER_PAGE}`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);
                 }
+            } catch (e) {
+                console.error('Error loading cart:', e);
+            }
+
+            // ========== UTILITY FUNCTIONS ==========
+
+            // Format number with commas
+            function formatNumber(num) {
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // Format price with commas
+            function formatPrice(price) {
+                return '$' + formatNumber(price.toFixed(2));
+            }
+
+            // Toast notification system
+            function showToast(message, type = 'info', title = '') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
                 
-                const data = await response.json();
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-exclamation-circle',
+                    info: 'fa-info-circle'
+                };
                 
-                // Expected JSON structure from your first code:
-                // {
-                //   "id": "product_id",
-                //   "name": "Product Name",
-                //   "brand": "Brand Name",
-                //   "category": "Category Name",
-                //   "description": "Description",
-                //   "price": 299.99,
-                //   "discount": 50.00,
-                //   "discounted_price": 249.99,
-                //   "badge": "New",
-                //   "stock": 15,
-                //   "images": ["url1.jpg", "url2.jpg"],
-                //   "features": ["Feature 1", "Feature 2"]
-                // }
+                const titles = {
+                    success: 'Success',
+                    error: 'Error',
+                    info: 'Information'
+                };
                 
-                // Map the API response to our product format
-                if (data && data.length > 0) {
-                    products = data.map(item => ({
-                        id: item.id,
-                        title: item.name,
-                        category: item.category,
-                        price: item.discount ? item.discounted_price : item.price,
-                        oldPrice: item.discount ? item.price : null,
-                        discount: item.discount ? Math.round((item.discount / item.price) * 100) : 0,
-                        image: item.images && item.images.length > 0 ? item.images[0] : '/images/marketplace_logo_base.png',
-                        description: item.description,
-                        brand: item.brand,
-                        stock: item.stock,
-                        badge: item.badge,
-                        features: item.features
-                    }));
+                toast.innerHTML = `
+                    <div class="toast-icon">
+                        <i class="fas ${icons[type]}"></i>
+                    </div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title || titles[type]}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <div class="toast-progress"></div>
+                `;
+                
+                container.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+
+            // ========== API CALLS ==========
+
+            // Fetch products - simple GET without params
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('/fetch/get-products');
                     
-                    totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
-                    
-                    // For pagination, we need to handle server-side pagination if available
-                    // If the API returns paginated data, use that instead
-                    if (data.totalPages) {
-                        totalPages = data.totalPages;
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     
-                    renderProducts();
-                    updatePagination();
-                    hideLoading();
-                } else {
-                    // Handle empty response
-                    productsGrid.innerHTML = `
-                        <div class="no-products" style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                            <i class="fas fa-box-open" style="font-size: 48px; color: var(--gray); margin-bottom: 15px;"></i>
-                            <h3>No products found</h3>
-                            <p>Check back soon for our latest collection</p>
+                    const data = await response.json();
+                    
+                    if (data && data.length > 0) {
+                        products = data.map(item => ({
+                            id: item.id,
+                            title: item.name,
+                            category: item.category,
+                            price: item.discount ? item.discounted_price : item.price,
+                            oldPrice: item.discount ? item.price : null,
+                            discount: item.discount ? Math.round((item.discount / item.price) * 100) : 0,
+                            image: item.images && item.images.length > 0 ? item.images[0] : '/images/marketplace_logo_base.png',
+                            description: item.description,
+                            brand: item.brand,
+                            stock: item.stock,
+                            badge: item.badge,
+                            features: item.features
+                        }));
+                        
+                        // Calculate total pages based on products per page
+                        totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+                        
+                        renderProducts();
+                        setupPagination();
+                    } else {
+                        showNoProducts();
+                    }
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                    showError('Failed to load products. Please try again.');
+                }
+            }
+
+            // Place order
+            async function placeOrder(orderData) {
+                try {
+                    const response = await fetch('/checkout/place-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(orderData)
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Failed to process order');
+                    }
+
+                    return result;
+                } catch (error) {
+                    console.error('Order error:', error);
+                    throw error;
+                }
+            }
+
+            // ========== RENDERING FUNCTIONS ==========
+
+            function renderProducts() {
+                const grid = document.getElementById('products-grid');
+                
+                if (!products.length) {
+                    showNoProducts();
+                    return;
+                }
+                
+                const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+                const endIndex = startIndex + PRODUCTS_PER_PAGE;
+                const paginatedProducts = products.slice(startIndex, endIndex);
+                
+                grid.innerHTML = paginatedProducts.map(product => {
+                    const discountBadge = product.discount ? `<div class="product-badge">${product.discount}% OFF</div>` : '';
+                    const oldPrice = product.oldPrice ? `<span class="product-price-old">${formatPrice(product.oldPrice)}</span>` : '';
+                    const badge = product.badge ? `<div class="product-badge">${product.badge}</div>` : '';
+                    
+                    return `
+                        <div class="product-card" data-id="${product.id}">
+                            <div class="product-image">
+                                <img src="${product.image}" alt="${product.title}" loading="lazy">
+                                ${discountBadge || badge}
+                                <button class="product-wishlist" onclick="window.toggleWishlist(this, ${product.id})">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="product-info">
+                                <p class="product-category">${product.category}</p>
+                                <h3 class="product-title">${product.title}</h3>
+                                <div class="product-price">
+                                    ${oldPrice}
+                                    ${formatPrice(product.price)}
+                                </div>
+                                <div class="product-actions">
+                                    <button class="btn-add-to-cart" onclick="window.addToCartDirect(${product.id})">
+                                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     `;
-                    pagination.style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error fetching products:', error);
-                showError('Failed to load products. Please try again.');
+                }).join('');
             }
-        }
 
-        // Show/Hide Loading
-        function showLoading() {
-            productsGrid.innerHTML = `
-                <div class="loading-spinner" style="grid-column: 1/-1;">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>Loading curated collection...</p>
-                </div>
-            `;
-        }
+            function showNoProducts() {
+                document.getElementById('products-grid').innerHTML = `
+                    <div class="no-products">
+                        <i class="fas fa-box-open"></i>
+                        <h3>No products found</h3>
+                        <p>Check back soon for our latest collection</p>
+                    </div>
+                `;
+            }
 
-        function hideLoading() {
-            // Products are already rendered
-        }
+            function showError(message) {
+                document.getElementById('products-grid').innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>${message}</p>
+                        <button class="retry-btn" onclick="window.fetchProducts()">Try Again</button>
+                    </div>
+                `;
+            }
 
-        function showError(message) {
-            productsGrid.innerHTML = `
-                <div class="error-message" style="grid-column: 1/-1;">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p>${message}</p>
-                    <button class="retry-btn" onclick="fetchProducts(1)">Try Again</button>
-                </div>
-            `;
-        }
-
-        // Render Products
-        function renderProducts() {
-            // Calculate pagination (client-side pagination if API doesn't support it)
-            const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
-            const endIndex = startIndex + PRODUCTS_PER_PAGE;
-            const paginatedProducts = products.slice(startIndex, endIndex);
-            
-            productsGrid.innerHTML = paginatedProducts.map(product => {
-                const discountBadge = product.discount ? `<div class="product-badge">${product.discount}% OFF</div>` : '';
-                const oldPrice = product.oldPrice ? `<span class="product-price-old">$${product.oldPrice.toFixed(2)}</span>` : '';
-                const badge = product.badge ? `<div class="product-badge">${product.badge}</div>` : '';
+            function setupPagination() {
+                const pagination = document.getElementById('pagination');
                 
-                return `
-                    <div class="product-card" data-id="${product.id}">
-                        <div class="product-image">
-                            <img src="${product.image}" alt="${product.title}">
-                            ${discountBadge || badge}
-                            <button class="product-wishlist" onclick="event.stopPropagation(); toggleWishlist(this, ${product.id})">
-                                <i class="far fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="product-info">
-                            <p class="product-category">${product.category}</p>
-                            <h3 class="product-title">${product.title}</h3>
-                            <div class="product-price">
-                                ${oldPrice}
-                                $${product.price.toFixed(2)}
+                if (totalPages <= 1) {
+                    pagination.style.display = 'none';
+                    return;
+                }
+                
+                pagination.style.display = 'flex';
+                
+                let paginationHtml = `
+                    <button class="pagination-btn" id="prev-page" ${currentPage === 1 ? 'disabled' : ''}>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                `;
+                
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationHtml += `
+                        <button class="pagination-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
+                            ${i}
+                        </button>
+                    `;
+                }
+                
+                paginationHtml += `
+                    <button class="pagination-btn" id="next-page" ${currentPage === totalPages ? 'disabled' : ''}>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                `;
+                
+                pagination.innerHTML = paginationHtml;
+                
+                // Add event listeners
+                document.getElementById('prev-page').addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderProducts();
+                        setupPagination();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+                
+                document.getElementById('next-page').addEventListener('click', () => {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderProducts();
+                        setupPagination();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                });
+                
+                document.querySelectorAll('.pagination-btn[data-page]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const page = parseInt(btn.dataset.page);
+                        if (page !== currentPage) {
+                            currentPage = page;
+                            renderProducts();
+                            setupPagination();
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
+                });
+            }
+
+            // ========== CART FUNCTIONS ==========
+
+            function addToCartDirect(productId) {
+                const product = products.find(p => p.id == productId);
+                if (!product) return;
+                
+                const existingItem = cart.find(item => item.id == productId);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                    showToast(`Increased quantity of "${product.title}"`, 'success', 'Cart Updated');
+                } else {
+                    cart.push({
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        image: product.image,
+                        quantity: 1
+                    });
+                    showToast(`"${product.title}" added to cart`, 'success', 'Item Added');
+                }
+                
+                saveCart();
+                updateCartCount();
+                
+                // Show feedback on button
+                const btn = document.querySelector(`.btn-add-to-cart[onclick*="${productId}"]`);
+                if (btn) {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Added';
+                    btn.style.background = 'var(--success)';
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.style.background = '';
+                    }, 1500);
+                }
+            }
+
+            function removeFromCart(productId) {
+                const item = cart.find(item => item.id == productId);
+                if (item) {
+                    cart = cart.filter(item => item.id != productId);
+                    saveCart();
+                    updateCartCount();
+                    if (document.getElementById('cart-modal').classList.contains('active')) {
+                        renderCartItems();
+                    }
+                    showToast(`"${item.title}" removed from cart`, 'info', 'Item Removed');
+                }
+            }
+
+            function updateCartCount() {
+                const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+                document.querySelectorAll('.cart-count').forEach(el => {
+                    el.textContent = totalItems;
+                });
+            }
+
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            function renderCartItems() {
+                const container = document.getElementById('cart-items');
+                
+                if (cart.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray);">Your curated selection is empty</p>';
+                    document.getElementById('cart-subtotal').textContent = '$0.00';
+                    document.getElementById('cart-tax').textContent = '$0.00';
+                    document.getElementById('cart-shipping').textContent = '$12.99';
+                    document.getElementById('cart-total').textContent = '$12.99';
+                    return;
+                }
+                
+                let subtotal = 0;
+                
+                container.innerHTML = cart.map(item => {
+                    const itemTotal = item.price * item.quantity;
+                    subtotal += itemTotal;
+                    
+                    return `
+                        <div class="cart-item">
+                            <div class="cart-item-image">
+                                <img src="${item.image}" alt="${item.title}" loading="lazy">
                             </div>
-                            <div class="product-actions">
-                                <button class="btn-add-to-cart" onclick="event.stopPropagation(); addToCartDirect(${product.id})">
-                                    <i class="fas fa-shopping-bag"></i> Add to Cart
+                            <div class="cart-item-details">
+                                <h3 class="cart-item-title">${item.title}</h3>
+                                <div class="cart-item-price">${formatPrice(item.price)} x ${item.quantity}</div>
+                                <div class="cart-item-total">${formatPrice(itemTotal)}</div>
+                            </div>
+                            <div class="cart-item-actions">
+                                <button class="cart-item-remove" onclick="window.removeFromCart(${item.id})">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Update Pagination
-        function updatePagination() {
-            pagination.style.display = totalPages > 1 ? 'flex' : 'none';
-            
-            pageButtons.forEach((btn, index) => {
-                const pageNum = index + 1;
-                btn.textContent = pageNum;
-                btn.classList.toggle('active', pageNum === currentPage);
-                btn.style.display = pageNum <= totalPages ? 'flex' : 'none';
+                    `;
+                }).join('');
                 
-                btn.onclick = () => {
-                    if (pageNum !== currentPage) {
-                        currentPage = pageNum;
-                        renderProducts();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                };
-            });
-            
-            prevPageBtn.disabled = currentPage === 1;
-            nextPageBtn.disabled = currentPage === totalPages;
-            
-            prevPageBtn.onclick = () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderProducts();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                const tax = subtotal * 0.08;
+                const shipping = 12.99;
+                const total = subtotal + tax + shipping;
+                
+                document.getElementById('cart-subtotal').textContent = formatPrice(subtotal);
+                document.getElementById('cart-tax').textContent = formatPrice(tax);
+                document.getElementById('cart-shipping').textContent = '$12.99';
+                document.getElementById('cart-total').textContent = formatPrice(total);
+            }
+
+            // ========== CHAT FUNCTIONS ==========
+
+            function checkSupportOnline() {
+                const now = new Date();
+                const day = now.getDay();
+                const hour = now.getHours();
+                const minutes = now.getMinutes();
+                
+                const estOffset = -5;
+                const localOffset = now.getTimezoneOffset() / 60;
+                const estHour = hour - localOffset + estOffset;
+                
+                let estDay = day;
+                if (estHour < 0) {
+                    estDay = (day - 1 + 7) % 7;
+                } else if (estHour >= 24) {
+                    estDay = (day + 1) % 7;
                 }
-            };
-            
-            nextPageBtn.onclick = () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderProducts();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                const adjustedHour = estHour < 0 ? estHour + 24 : (estHour >= 24 ? estHour - 24 : estHour);
+                
+                const isWeekday = estDay >= 1 && estDay <= 5;
+                const isBusinessHours = adjustedHour >= 9 && adjustedHour < 18;
+                
+                return isWeekday && isBusinessHours;
+            }
+
+            function updateChatStatus() {
+                const isOnline = checkSupportOnline();
+                const statusBadge = document.getElementById('chat-status-badge');
+                const supportStatus = document.getElementById('support-status');
+                const statusText = document.getElementById('support-status-text');
+                const chatToggle = document.getElementById('chat-toggle');
+                
+                if (isOnline) {
+                    statusBadge.className = 'chat-status-badge online';
+                    supportStatus.className = 'support-status online';
+                    statusText.textContent = 'Online';
+                    chatToggle.classList.remove('offline');
+                } else {
+                    statusBadge.className = 'chat-status-badge offline';
+                    supportStatus.className = 'support-status offline';
+                    statusText.textContent = 'Offline';
+                    chatToggle.classList.add('offline');
                 }
-            };
-        }
-
-        // ========== CHAT FUNCTIONS - Customer Support Only with Offline Mode ==========
-
-        // Check if support is online based on business hours
-        function checkSupportOnline() {
-            const now = new Date();
-            const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-            const hour = now.getHours();
-            const minutes = now.getMinutes();
-            const currentTime = hour + minutes / 60;
-            
-            // Business hours: Monday-Friday, 9am-6pm EST
-            // Convert to local time based on user's timezone
-            const estOffset = -5; // EST is UTC-5
-            const localOffset = now.getTimezoneOffset() / 60;
-            const estHour = hour - localOffset + estOffset;
-            
-            // Adjust for day change
-            let estDay = day;
-            if (estHour < 0) {
-                estDay = (day - 1 + 7) % 7;
-            } else if (estHour >= 24) {
-                estDay = (day + 1) % 7;
             }
-            
-            const estTime = estHour < 0 ? estHour + 24 : (estHour >= 24 ? estHour - 24 : estHour);
-            
-            const isWeekday = estDay >= 1 && estDay <= 5;
-            const isBusinessHours = estTime >= 9 && estTime < 18;
-            
-            return isWeekday && isBusinessHours;
-        }
 
-        // Update chat status UI
-        function updateChatStatus() {
-            isOnline = checkSupportOnline();
-            
-            if (isOnline) {
-                chatStatusBadge.className = 'chat-status-badge online';
-                supportStatus.className = 'support-status online';
-                supportStatusText.textContent = 'Online';
-                chatToggle.classList.remove('offline');
-            } else {
-                chatStatusBadge.className = 'chat-status-badge offline';
-                supportStatus.className = 'support-status offline';
-                supportStatusText.textContent = 'Offline';
-                chatToggle.classList.add('offline');
+            function initChat() {
+                const isOnline = checkSupportOnline();
+                const messages = document.getElementById('chat-messages');
+                const inputArea = document.getElementById('chat-input-area');
+                const offlineForm = document.getElementById('offline-message-form');
+                
+                messages.innerHTML = '';
+                
+                if (isOnline) {
+                    inputArea.style.display = 'flex';
+                    offlineForm.style.display = 'none';
+                    document.getElementById('chat-input').disabled = false;
+                    document.getElementById('chat-send').disabled = false;
+                    
+                    const welcomeMsg = document.createElement('div');
+                    welcomeMsg.className = 'message support';
+                    welcomeMsg.innerHTML = `
+                        <div>Hello! I'm Sarah from Haklim Support. How can I assist you today?</div>
+                        <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    `;
+                    messages.appendChild(welcomeMsg);
+                } else {
+                    inputArea.style.display = 'none';
+                    offlineForm.style.display = 'block';
+                    
+                    const offlineMsg = document.createElement('div');
+                    offlineMsg.className = 'message system';
+                    offlineMsg.innerHTML = `
+                        <div>😴 We're currently offline. Our support hours are Monday-Friday, 9am-6pm EST. Please leave us a message and we'll get back to you during business hours.</div>
+                    `;
+                    messages.appendChild(offlineMsg);
+                }
             }
-            
-            // Update support hours display
-            supportHours.textContent = 'Mon-Fri: 9am-6pm EST';
-        }
 
-        // Initialize chat
-        function initChat() {
-            chatMessages.innerHTML = '';
-            
-            if (isOnline) {
-                // Online mode - show chat interface
-                chatInputArea.style.display = 'flex';
-                offlineMessageForm.style.display = 'none';
-                chatInput.disabled = false;
-                chatSend.disabled = false;
+            function sendChatMessage() {
+                const input = document.getElementById('chat-input');
+                const message = input.value.trim();
                 
-                // Add welcome message from support
-                addSupportMessage("Hello! I'm Sarah from Haklim Support. How can I assist you today?");
-            } else {
-                // Offline mode - show message form
-                chatInputArea.style.display = 'none';
-                offlineMessageForm.style.display = 'block';
+                if (!message) return;
                 
-                // Add offline message
-                const offlineDiv = document.createElement('div');
-                offlineDiv.className = 'message system';
-                offlineDiv.innerHTML = `
-                    <div>😴 We're currently offline. Our support hours are Monday-Friday, 9am-6pm EST. Please leave us a message and we'll get back to you during business hours.</div>
+                const messages = document.getElementById('chat-messages');
+                
+                const customerMsg = document.createElement('div');
+                customerMsg.className = 'message customer';
+                customerMsg.innerHTML = `
+                    <div>${message}</div>
+                    <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                 `;
-                chatMessages.appendChild(offlineDiv);
-            }
-        }
-
-        function addSupportMessage(text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message support';
-            messageDiv.innerHTML = `
-                <div>${text}</div>
-                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function addCustomerMessage(text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message customer';
-            messageDiv.innerHTML = `
-                <div>${text}</div>
-                <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function addSystemMessage(text) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'message system';
-            messageDiv.innerHTML = `
-                <div>${text}</div>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function sendMessage() {
-            if (!isOnline) {
-                alert('Support is currently offline. Please use the message form below.');
-                return;
-            }
-            
-            const message = chatInput.value.trim();
-            if (!message) return;
-            
-            addCustomerMessage(message);
-            chatInput.value = '';
-            
-            // Simulate support response (in production, this would be a real API call)
-            setTimeout(() => {
-                const responses = [
-                    "Thank you for reaching out. I'd be happy to help with that.",
-                    "Let me check that for you. One moment please.",
-                    "I can assist you with your inquiry about our products.",
-                    "Would you like me to provide more details about that item?",
-                    "I've noted your question and will help you right away."
-                ];
-                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                addSupportMessage(randomResponse);
-            }, 1000 + Math.random() * 2000);
-        }
-
-        function sendOfflineMessages() {
-            const message = offlineMessage.value.trim();
-            const email = offlineEmail.value.trim();
-            
-            if (!message) {
-                alert('Please enter a message');
-                return;
-            }
-            
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email address');
-                return;
-            }
-            
-            // In production, send this to your backend API
-            console.log('Offline message:', { message, email });
-            
-            // Show confirmation
-            offlineMessageForm.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success); margin-bottom: 15px;"></i>
-                    <h4>Message Sent!</h4>
-                    <p style="color: var(--gray); margin-bottom: 15px;">We'll get back to you at ${email} during business hours.</p>
-                    <button class="btn btn-primary" onclick="initChat()">Send Another Message</button>
-                </div>
-            `;
-        }
-
-        // ========== CART FUNCTIONS ==========
-
-        function addToCartDirect(productId) {
-            const product = products.find(p => p.id == productId);
-            if (!product) return;
-            
-            const existingItem = cart.find(item => item.id == productId);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
-            }
-            
-            saveCart();
-            updateCartCount();
-            showAddToCartFeedback(productId);
-        }
-
-        function showAddToCartFeedback(productId) {
-            const btn = document.querySelector(`.btn-add-to-cart[onclick*="${productId}"]`);
-            if (btn) {
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i> Added';
-                btn.style.background = 'var(--success)';
+                messages.appendChild(customerMsg);
+                
+                input.value = '';
+                
+                messages.scrollTop = messages.scrollHeight;
                 
                 setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.style.background = '';
-                }, 1500);
+                    const responses = [
+                        "Thank you for reaching out. I'd be happy to help with that.",
+                        "Let me check that for you. One moment please.",
+                        "I can assist you with your inquiry about our products.",
+                        "Would you like me to provide more details about that item?",
+                        "I've noted your question and will help you right away."
+                    ];
+                    const response = responses[Math.floor(Math.random() * responses.length)];
+                    
+                    const supportMsg = document.createElement('div');
+                    supportMsg.className = 'message support';
+                    supportMsg.innerHTML = `
+                        <div>${response}</div>
+                        <div class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                    `;
+                    messages.appendChild(supportMsg);
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1000 + Math.random() * 2000);
             }
-        }
 
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id != productId);
-            saveCart();
-            updateCartCount();
-            if (cartModal.classList.contains('active')) {
-                renderCartItems();
-            }
-        }
-
-        function updateCartCount() {
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            cartCount.textContent = totalItems;
-        }
-
-        function saveCart() {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        function renderCartItems() {
-            cartItemsContainer.innerHTML = '';
-            
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray);">Your curated selection is empty</p>';
-                cartSubtotal.textContent = '$0.00';
-                cartTax.textContent = '$0.00';
-                cartShipping.textContent = '$12.99';
-                cartTotal.textContent = '$12.99';
-                return;
-            }
-            
-            let subtotal = 0;
-            
-            cart.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
+            function sendOfflineMessage() {
+                const message = document.getElementById('offline-message').value.trim();
+                const email = document.getElementById('offline-email').value.trim();
                 
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item';
-                cartItem.innerHTML = `
-                    <div class="cart-item-image">
-                        <img src="${item.image}" alt="${item.title}">
-                    </div>
-                    <div class="cart-item-details">
-                        <h3 class="cart-item-title">${item.title}</h3>
-                        <div class="cart-item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
-                        <div class="cart-item-total">$${itemTotal.toFixed(2)}</div>
-                    </div>
-                    <div class="cart-item-actions">
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})" style="background: none; color: var(--danger); font-size: 18px;">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                if (!message) {
+                    showToast('Please enter a message', 'error', 'Missing Message');
+                    return;
+                }
+                
+                if (!email || !email.includes('@')) {
+                    showToast('Please enter a valid email address', 'error', 'Invalid Email');
+                    return;
+                }
+                
+                console.log('Offline message:', { message, email });
+                
+                const form = document.getElementById('offline-message-form');
+                form.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success); margin-bottom: 15px;"></i>
+                        <h4 style="margin-bottom: 10px;">Message Sent!</h4>
+                        <p style="color: var(--gray); margin-bottom: 15px;">We'll get back to you at ${email} during business hours.</p>
+                        <button class="btn btn-primary" onclick="window.initChat()">Send Another Message</button>
                     </div>
                 `;
+            }
+
+            // ========== MODAL FUNCTIONS ==========
+
+            function openProductModal(productId) {
+                const product = products.find(p => p.id == productId);
+                if (!product) return;
                 
-                cartItemsContainer.appendChild(cartItem);
-            });
-            
-            const tax = subtotal * 0.08;
-            const shipping = 12.99;
-            const total = subtotal + tax + shipping;
-            
-            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
-            cartTax.textContent = `$${tax.toFixed(2)}`;
-            cartShipping.textContent = `$${shipping.toFixed(2)}`;
-            cartTotal.textContent = `$${total.toFixed(2)}`;
-        }
-
-        // ========== PRODUCT MODAL FUNCTIONS ==========
-
-        function openProductModal(productId) {
-            const product = products.find(p => p.id == productId);
-            if (!product) return;
-            
-            currentProduct = product;
-            
-            document.getElementById('modal-product-image').src = product.image;
-            document.getElementById('modal-product-title').textContent = product.title;
-            document.getElementById('modal-product-price').textContent = `$${product.price.toFixed(2)}`;
-            document.getElementById('modal-product-category').textContent = product.category;
-            document.getElementById('modal-product-description').textContent = product.description;
-            document.getElementById('quantity-input').value = 1;
-            
-            productModal.classList.add('active');
-        }
-
-        // ========== TESTIMONIAL CAROUSEL FUNCTIONS ==========
-
-        function initTestimonialCarousel() {
-            // Create dots
-            for (let i = 0; i < testimonialSlides; i++) {
-                const dot = document.createElement('button');
-                dot.className = 'testimonial-dot';
-                if (i === 0) dot.classList.add('active');
-                dot.setAttribute('data-slide', i);
-                dot.addEventListener('click', () => goToTestimonialSlide(i));
-                testimonialDots.appendChild(dot);
+                currentProduct = product;
+                
+                document.getElementById('modal-product-image').src = product.image;
+                document.getElementById('modal-product-title').textContent = product.title;
+                document.getElementById('modal-product-price').textContent = formatPrice(product.price);
+                document.getElementById('modal-product-category').textContent = product.category;
+                document.getElementById('modal-product-description').textContent = product.description;
+                document.getElementById('quantity-input').value = 1;
+                
+                document.getElementById('product-modal').classList.add('active');
+                document.body.style.overflow = 'hidden';
             }
-            
-            // Start auto slide
-            startAutoSlide();
-            
-            // Pause on hover
-            testimonialsTrack.addEventListener('mouseenter', () => {
-                clearInterval(autoSlideInterval);
-            });
-            
-            testimonialsTrack.addEventListener('mouseleave', () => {
-                startAutoSlide();
-            });
-        }
 
-        function goToTestimonialSlide(slideIndex) {
-            if (slideIndex < 0) slideIndex = testimonialSlides - 1;
-            if (slideIndex >= testimonialSlides) slideIndex = 0;
-            
-            currentTestimonialSlide = slideIndex;
-            testimonialsTrack.style.transform = `translateX(-${slideIndex * 100}%)`;
-            
-            // Update dots
-            document.querySelectorAll('.testimonial-dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === slideIndex);
-            });
-            
-            // Reset auto slide timer
-            resetAutoSlide();
-        }
-
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(() => {
-                goToTestimonialSlide(currentTestimonialSlide + 1);
-            }, 5000);
-        }
-
-        function resetAutoSlide() {
-            clearInterval(autoSlideInterval);
-            startAutoSlide();
-        }
-
-        // ========== UTILITY FUNCTIONS ==========
-
-        window.toggleWishlist = function(btn, productId) {
-            btn.classList.toggle('active');
-            const icon = btn.querySelector('i');
-            if (btn.classList.contains('active')) {
-                icon.className = 'fas fa-heart';
-            } else {
-                icon.className = 'far fa-heart';
+            function closeModal(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
-        };
 
-        // ========== EVENT LISTENERS ==========
+            // ========== WISHLIST FUNCTION ==========
 
-        function setupEventListeners() {
-            // Product card click
-            document.addEventListener('click', (e) => {
-                const productCard = e.target.closest('.product-card');
-                if (productCard && !e.target.closest('.btn-add-to-cart') && !e.target.closest('.product-wishlist')) {
-                    const productId = productCard.getAttribute('data-id');
-                    openProductModal(productId);
+            function toggleWishlist(btn, productId) {
+                btn.classList.toggle('active');
+                const icon = btn.querySelector('i');
+                if (btn.classList.contains('active')) {
+                    icon.className = 'fas fa-heart';
+                    showToast('Item added to wishlist', 'success', 'Wishlist');
+                } else {
+                    icon.className = 'far fa-heart';
+                    showToast('Item removed from wishlist', 'info', 'Wishlist');
                 }
-            });
-            
-            // Modal close buttons
-            document.getElementById('product-modal-close').addEventListener('click', () => {
-                productModal.classList.remove('active');
-            });
-            
-            document.getElementById('cart-modal-close').addEventListener('click', () => {
-                cartModal.classList.remove('active');
-            });
-            
-            document.getElementById('checkout-modal-close').addEventListener('click', () => {
-                checkoutModal.classList.remove('active');
-            });
-            
-            // Close modals when clicking outside
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('active');
+            }
+
+            // ========== CHECKOUT FUNCTIONS ==========
+
+            async function handleCheckoutSubmit(e) {
+                e.preventDefault();
+                
+                const form = e.target;
+                const submitBtn = document.getElementById('complete-purchase-btn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                try {
+                    const formData = new FormData(form);
+                    const formValues = Object.fromEntries(formData.entries());
+                    
+                    const orderData = {
+                        cart: cart.map(item => ({
+                            id: item.id,
+                            quantity: item.quantity
+                        })),
+                        customerInfo: {
+                            firstname: formValues['full-name'].split(' ')[0] || '',
+                            lastname: formValues['full-name'].split(' ').slice(1).join(' ') || '',
+                            email: formValues.email,
+                            telephone: formValues.phone,
+                            delivery_method: formValues['delivery-method'],
+                            delivery_address: formValues['delivery-method'] === 'doorstep' ? {
+                                country: formValues.country,
+                                city: formValues.city,
+                                area: formValues.area
+                            } : null
+                        },
+                        paymentMethod: formValues['payment-method']
+                    };
+                    
+                    const result = await placeOrder(orderData);
+                    
+                    if (result.success) {
+                        cart = [];
+                        saveCart();
+                        updateCartCount();
+                        
+                        closeModal('checkout-modal');
+                        
+                        document.getElementById('payment-modal').classList.add('active');
+                        document.querySelector('.payment-processing').style.display = 'block';
+                        document.getElementById('payment-iframe-container').style.display = 'none';
+                        
+                        setTimeout(() => {
+                            document.querySelector('.payment-processing').style.display = 'none';
+                            document.getElementById('payment-iframe-container').style.display = 'block';
+                            document.getElementById('payment-iframe').src = result.redirectUrl || 'about:blank';
+                        }, 2000);
+                        
+                        showToast('Order placed successfully! Redirecting to payment...', 'success', 'Order Confirmed');
+                    } else {
+                        throw new Error(result.message || 'Checkout failed');
+                    }
+                } catch (error) {
+                    console.error('Checkout error:', error);
+                    showToast(error.message || 'An error occurred during checkout', 'error', 'Checkout Failed');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Complete Purchase';
+                }
+            }
+
+            // ========== SEARCH FUNCTION ==========
+
+            function handleSearch() {
+                const query = document.getElementById('search-input').value.trim().toLowerCase();
+                
+                if (!query) {
+                    fetchProducts();
+                    return;
+                }
+                
+                const filtered = products.filter(p => 
+                    p.title.toLowerCase().includes(query) || 
+                    p.category.toLowerCase().includes(query) ||
+                    p.description.toLowerCase().includes(query)
+                );
+                
+                if (filtered.length > 0) {
+                    products = filtered;
+                    currentPage = 1;
+                    totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+                    renderProducts();
+                    setupPagination();
+                    showToast(`Found ${filtered.length} products matching "${query}"`, 'success', 'Search Results');
+                } else {
+                    document.getElementById('products-grid').innerHTML = `
+                        <div class="no-products">
+                            <i class="fas fa-search"></i>
+                            <h3>No products found for "${query}"</h3>
+                            <p>Try different keywords or browse our categories</p>
+                            <button class="btn btn-primary" style="margin-top: 20px;" onclick="window.fetchProducts()">View All Products</button>
+                        </div>
+                    `;
+                    document.getElementById('pagination').style.display = 'none';
+                }
+            }
+
+            // ========== EVENT LISTENERS SETUP ==========
+
+            function setupEventListeners() {
+                // Product card click
+                document.addEventListener('click', (e) => {
+                    const card = e.target.closest('.product-card');
+                    if (card && !e.target.closest('.btn-add-to-cart') && !e.target.closest('.product-wishlist')) {
+                        const id = card.dataset.id;
+                        openProductModal(id);
                     }
                 });
-            });
-            
-            // Cart button
-            document.getElementById('cart-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                renderCartItems();
-                cartModal.classList.add('active');
-            });
-            
-            // Continue shopping button
-            document.getElementById('continue-shopping').addEventListener('click', () => {
-                cartModal.classList.remove('active');
-            });
-            
-            // Quantity buttons
-            document.getElementById('quantity-decrease').addEventListener('click', () => {
-                const input = document.getElementById('quantity-input');
-                let value = parseInt(input.value);
-                if (value > 1) {
-                    input.value = value - 1;
-                }
-            });
-            
-            document.getElementById('quantity-increase').addEventListener('click', () => {
-                const input = document.getElementById('quantity-input');
-                let value = parseInt(input.value);
-                input.value = value + 1;
-            });
-            
-            // Add to cart from modal
-            document.getElementById('add-to-cart-modal').addEventListener('click', () => {
-                if (!currentProduct) return;
                 
-                const quantity = parseInt(document.getElementById('quantity-input').value);
+                // Modal close buttons
+                document.getElementById('product-modal-close').addEventListener('click', () => closeModal('product-modal'));
+                document.getElementById('cart-modal-close').addEventListener('click', () => closeModal('cart-modal'));
+                document.getElementById('checkout-modal-close').addEventListener('click', () => closeModal('checkout-modal'));
+                document.getElementById('payment-modal-close').addEventListener('click', () => closeModal('payment-modal'));
                 
-                const existingItem = cart.find(item => item.id == currentProduct.id);
-                
-                if (existingItem) {
-                    existingItem.quantity += quantity;
-                } else {
-                    cart.push({
-                        id: currentProduct.id,
-                        title: currentProduct.title,
-                        price: currentProduct.price,
-                        image: currentProduct.image,
-                        quantity: quantity
+                // Close modals on outside click
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.classList.remove('active');
+                            document.body.style.overflow = 'auto';
+                        }
                     });
-                }
+                });
                 
-                saveCart();
-                updateCartCount();
-                productModal.classList.remove('active');
+                // Cart button
+                document.getElementById('cart-btn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    renderCartItems();
+                    document.getElementById('cart-modal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
                 
-                alert(`Added ${quantity} "${currentProduct.title}" to your curated selection.`);
-            });
-            
-            // Checkout button
-            document.getElementById('checkout-btn').addEventListener('click', () => {
-                if (cart.length > 0) {
-                    cartModal.classList.remove('active');
-                    checkoutModal.classList.add('active');
-                }
-            });
-            
-            // Checkout form submission
-            document.getElementById('checkout-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Thank you for your order! Your curated items will be carefully prepared and shipped. A confirmation email has been sent.');
-                cart = [];
-                saveCart();
-                updateCartCount();
-                checkoutModal.classList.remove('active');
-            });
-            
-            // Testimonial navigation
-            testimonialPrev.addEventListener('click', () => goToTestimonialSlide(currentTestimonialSlide - 1));
-            testimonialNext.addEventListener('click', () => goToTestimonialSlide(currentTestimonialSlide + 1));
-            
-            // Chat toggle
-            chatToggle.addEventListener('click', () => {
-                chatWindow.classList.toggle('active');
-                if (chatWindow.classList.contains('active')) {
-                    initChat();
-                }
-            });
-            
-            chatClose.addEventListener('click', () => {
-                chatWindow.classList.remove('active');
-            });
-            
-            chatSend.addEventListener('click', sendMessage);
-            
-            chatInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-            
-            sendOfflineMessage.addEventListener('click', sendOfflineMessage);
-            
-            // Search functionality
-            document.getElementById('search-btn').addEventListener('click', () => {
-                const query = document.getElementById('search-input').value.trim();
-                if (query) {
-                    // Filter products locally based on search
-                    const filteredProducts = products.filter(p => 
-                        p.title.toLowerCase().includes(query.toLowerCase()) || 
-                        p.category.toLowerCase().includes(query.toLowerCase()) ||
-                        p.description.toLowerCase().includes(query.toLowerCase())
-                    );
+                // Continue shopping button
+                document.getElementById('continue-shopping').addEventListener('click', () => {
+                    closeModal('cart-modal');
+                });
+                
+                // Quantity buttons
+                document.getElementById('quantity-decrease').addEventListener('click', () => {
+                    const input = document.getElementById('quantity-input');
+                    let value = parseInt(input.value);
+                    if (value > 1) input.value = value - 1;
+                });
+                
+                document.getElementById('quantity-increase').addEventListener('click', () => {
+                    const input = document.getElementById('quantity-input');
+                    let value = parseInt(input.value);
+                    input.value = value + 1;
+                });
+                
+                // Add to cart from modal
+                document.getElementById('add-to-cart-modal').addEventListener('click', () => {
+                    if (!currentProduct) return;
                     
-                    if (filteredProducts.length > 0) {
-                        products = filteredProducts;
-                        currentPage = 1;
-                        totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
-                        renderProducts();
-                        updatePagination();
+                    const quantity = parseInt(document.getElementById('quantity-input').value);
+                    const existingItem = cart.find(item => item.id == currentProduct.id);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += quantity;
                     } else {
-                        productsGrid.innerHTML = `
-                            <div class="no-products" style="grid-column: 1/-1; text-align: center; padding: 40px;">
-                                <i class="fas fa-search" style="font-size: 48px; color: var(--gray); margin-bottom: 15px;"></i>
-                                <h3>No products found for "${query}"</h3>
-                                <p>Try different keywords or browse our categories</p>
-                                <button class="btn btn-primary" style="margin-top: 20px;" onclick="fetchProducts(1)">View All Products</button>
-                            </div>
-                        `;
-                        pagination.style.display = 'none';
+                        cart.push({
+                            id: currentProduct.id,
+                            title: currentProduct.title,
+                            price: currentProduct.price,
+                            image: currentProduct.image,
+                            quantity: quantity
+                        });
                     }
-                }
-            });
-            
-            document.getElementById('search-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    document.getElementById('search-btn').click();
-                }
-            });
-            
-            // Mobile menu
-            document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
-                alert('Mobile menu will be implemented here');
-            });
-            
-            // Check support status every minute
-            setInterval(updateChatStatus, 60000);
-        }
+                    
+                    saveCart();
+                    updateCartCount();
+                    closeModal('product-modal');
+                    showToast(`Added ${quantity} "${currentProduct.title}" to cart`, 'success', 'Item Added');
+                });
+                
+                // Checkout button
+                document.getElementById('checkout-btn').addEventListener('click', () => {
+                    if (cart.length === 0) {
+                        showToast('Your cart is empty', 'error', 'Cannot Checkout');
+                        return;
+                    }
+                    closeModal('cart-modal');
+                    document.getElementById('checkout-modal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+                
+                // Checkout form submission
+                document.getElementById('checkout-form').addEventListener('submit', handleCheckoutSubmit);
+                
+                // Delivery method change
+                document.getElementById('delivery-method').addEventListener('change', (e) => {
+                    const addressFields = document.getElementById('address-fields');
+                    addressFields.style.display = e.target.value === 'doorstep' ? 'block' : 'none';
+                });
+                
+                // Cancel payment button
+                document.getElementById('cancel-payment-btn').addEventListener('click', () => {
+                    closeModal('payment-modal');
+                    showToast('Payment cancelled', 'info', 'Cancelled');
+                });
+                
+                // Chat toggle
+                document.getElementById('chat-toggle').addEventListener('click', () => {
+                    const window = document.getElementById('chat-window');
+                    window.classList.toggle('active');
+                    if (window.classList.contains('active')) {
+                        initChat();
+                    }
+                });
+                
+                document.getElementById('chat-close').addEventListener('click', () => {
+                    document.getElementById('chat-window').classList.remove('active');
+                });
+                
+                // Chat send
+                document.getElementById('chat-send').addEventListener('click', sendChatMessage);
+                document.getElementById('chat-input').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') sendChatMessage();
+                });
+                
+                // Offline message send
+                document.getElementById('send-offline-message').addEventListener('click', sendOfflineMessage);
+                
+                // Search
+                document.getElementById('search-btn').addEventListener('click', handleSearch);
+                document.getElementById('search-input').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleSearch();
+                });
+                
+                // Mobile menu
+                document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+                    showToast('Mobile menu coming soon', 'info', 'Under Development');
+                });
+                
+                // Wishlist button
+                document.getElementById('wishlist-btn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showToast('Wishlist feature coming soon', 'info', 'Under Development');
+                });
+                
+                // Category cards
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const category = card.querySelector('.category-name').textContent;
+                        showToast(`Browsing ${category} category`, 'info', 'Category');
+                    });
+                });
+                
+                // View all links
+                document.querySelectorAll('.view-all').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showToast('View all feature coming soon', 'info', 'Under Development');
+                    });
+                });
+                
+                // Hero buttons
+                document.querySelectorAll('.hero-actions .btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        if (btn.textContent.includes('Explore')) {
+                            document.getElementById('products-grid').scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            showToast('Pre-order feature coming soon', 'info', 'Under Development');
+                        }
+                    });
+                });
+            }
 
-        // Make functions available globally
-        window.removeFromCart = removeFromCart;
-        window.fetchProducts = fetchProducts;
+            // ========== INITIALIZATION ==========
+
+            function init() {
+                fetchProducts();
+                updateCartCount();
+                updateChatStatus();
+                setupEventListeners();
+                
+                // Update chat status every minute
+                setInterval(updateChatStatus, 60000);
+            }
+
+            // Expose functions to window
+            window.fetchProducts = fetchProducts;
+            window.addToCartDirect = addToCartDirect;
+            window.removeFromCart = removeFromCart;
+            window.toggleWishlist = toggleWishlist;
+            window.initChat = initChat;
+
+            // Start the app
+            document.addEventListener('DOMContentLoaded', init);
+        })();
     </script>
 </body>
 </html>
-
