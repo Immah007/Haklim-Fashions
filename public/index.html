@@ -2820,8 +2820,8 @@
                             quantity: item.quantity
                         })),
                         customerInfo: {
-                            firstname: formValues['full-name'].split(' ')[0] || '',
-                            lastname: formValues['full-name'].split(' ').slice(1).join(' ') || '',
+                            firstname: 'test', // formValues['full-name'].split(' ')[0] || '',
+                            lastname: 'test', // formValues['full-name'].split(' ').slice(1).join(' ') || '',
                             email: formValues.email,
                             telephone: formValues.phone,
                             delivery_method: formValues['delivery-method'],
@@ -3099,3 +3099,4 @@
     </script>
 </body>
 </html>
+
